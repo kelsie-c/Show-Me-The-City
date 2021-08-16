@@ -241,6 +241,8 @@ export const RecCardStyling = styled.div`
   width: 35vw;
   font-family: "Hind Siliguri", sans-serif;
   font-weight: 600;
+  padding: 4px;
+  padding-top: 25px;
 
   @media ${device.tablet} {
     width: 130px;

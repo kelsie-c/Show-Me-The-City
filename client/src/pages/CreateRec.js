@@ -6,13 +6,15 @@ import {
   FormFont,
   ViewContainer,
 } from "../components/styling/style";
-
+const style2 = {
+  color: "#76EAD7",
+};
 const CreateRec = () => {
   const [photo, setPhoto] = useState("https://via.placeholder.com/300x175");
 
   return (
     <>
-      <NavBar />
+      <NavBar style={style2} />
 
       <ViewContainer>
         <BackToProfile>

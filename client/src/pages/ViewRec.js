@@ -5,7 +5,6 @@ import {
   BackToProfile,
   DelBtn,
   EditBtn,
-  Fave,
   ImgRec,
   RecBody,
   RecContainer,
@@ -15,8 +14,8 @@ import {
 import API from "../utils/API";
 
 const style = {
-  overflow: "auto",
-  maxHeight: "20px",
+  color: "#393E46",
+  fontSize: "25px",
 };
 
 const ViewRec = (props) => {
@@ -37,11 +36,11 @@ const ViewRec = (props) => {
   }, [recID]);
 
   function handleDelete() {
-    if(window.confirm("Are you sure you want to delete this recommendation?")) {
-      API.deletePost(recID)
-      .then(history.push("/profile"))
+    if (
+      window.confirm("Are you sure you want to delete this recommendation?")
+    ) {
+      API.deletePost(recID).then(history.push("/profile"));
     }
-    
   }
 
   return (
@@ -58,17 +57,15 @@ const ViewRec = (props) => {
             <br></br>
             <div className="row text-center">
               <RecTitle className="col">{data.title}</RecTitle>
-              <Fave href="test" className="col">
-                500 ✰
-              </Fave>
             </div>
 
             <RecBody className="container">
-              <p styl={style}>{data.synopsis}</p>
+              <p>{data.synopsis}</p>
 
               <div className="row text-center">
                 <EditBtn className="col">
                   <Link
+                    style={style}
                     to={{
                       pathname: "/edit",
                       recID: { recID },
@@ -81,7 +78,9 @@ const ViewRec = (props) => {
                     Edit
                   </Link>
                 </EditBtn>
-                <DelBtn className="col" onClick={handleDelete}>Delete</DelBtn>
+                <DelBtn style={style} className="col" onClick={handleDelete}>
+                  Delete
+                </DelBtn>
               </div>
             </RecBody>
           </RecContainer>

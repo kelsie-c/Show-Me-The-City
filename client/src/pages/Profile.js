@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import FaveCard from "../components/FaveCard/index";
 import NavBar from "../components/NavBar/index";
 import RecCard from "../components/RecCard/index";
 import {
@@ -13,11 +12,14 @@ import { useAuth } from "../contexts/AuthContext";
 import API from "../utils/API";
 
 const style = {
-  overflowX: 'scroll'
-}
+  overflowX: "scroll",
+};
+
+const style2 = {
+  color: "#76EAD7",
+};
 
 const Profile = () => {
-
   const [error, setError] = useState("");
   const { currentUser } = useAuth();
   const [photo, setPhoto] = useState("https://via.placeholder.com/300x175");
@@ -25,17 +27,15 @@ const Profile = () => {
 
   useEffect(() => {
     API.getPostsByUser(currentUser.uid)
-    .then(res => {
-      
-      setData(res.data)
-      
-    })
-    .then(() => console.log(data))
-  }, [currentUser])
+      .then((res) => {
+        setData(res.data);
+      })
+      .then(() => console.log(data));
+  }, [currentUser]);
 
   return (
     <>
-      <NavBar isProfile={true}/>
+      <NavBar style={style2} isProfile={true} />
       <GeneralContainer>
         <ProfileHeader className="text-center">My Profile</ProfileHeader>
         <ProfileInfo>
@@ -54,28 +54,20 @@ const Profile = () => {
           <div style={style} className="row flex-row flex-nowrap">
             <div className="col">
               <CreateCard className="card text-center">
-                <Link to={{ pathname: "/create", photo: { photo } }}>
+                <Link
+                  style={style2}
+                  to={{ pathname: "/create", photo: { photo } }}
+                >
                   + Create
                 </Link>
               </CreateCard>
             </div>
 
-              { data.length ? data.map ( x => <RecCard data={x} /> ) : <div> Loading... </div> }
-
-
-          </div>
-        </div>
-        <ProfileHeader classNameName="text-center">My Favorites</ProfileHeader>
-        <div className="container">
-          <div className="row flex-row flex-nowrap">
-            {/* Pseudo code to map favorites info!!!!! See FaveCard also */}
-            {/* {this.state.recommendations.map((data) => (
-              <FaveCard 
-              title={data.title} 
-              favorites={data.favorites}
-              location={data.location}
-               />
-            ))} */}
+            {data.length ? (
+              data.map((x) => <RecCard data={x} />)
+            ) : (
+              <div> Loading... </div>
+            )}
           </div>
         </div>
       </GeneralContainer>

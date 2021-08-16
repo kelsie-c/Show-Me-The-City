@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { Nav } from "../styling/style";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { Nav } from "../styling/style";
+
+const style = {
+  color: "#76EAD7",
+};
 
 function NavBar(props) {
   const [error, setError] = useState("");
@@ -15,8 +19,8 @@ function NavBar(props) {
     setError("");
 
     try {
-      await logout()
-      history.push('/');
+      await logout();
+      history.push("/");
     } catch {
       setError("Failed to log out");
     }
@@ -24,11 +28,13 @@ function NavBar(props) {
 
   return (
     <>
-      <Nav className="navbar">
+      <Nav style={style} className="navbar">
         {profile ? (
           <>
             <a href="/home">Home</a>
-            <a href='/' onClick={handleLogout}>Logout</a>
+            <a href="/" onClick={handleLogout}>
+              Logout
+            </a>
           </>
         ) : login ? (
           <>
@@ -37,12 +43,13 @@ function NavBar(props) {
         ) : (
           <>
             <a href="/profile">Profile</a>
-            <a href="/" onClick={handleLogout}>Logout</a>
+            <a href="/" onClick={handleLogout}>
+              Logout
+            </a>
           </>
         )}
       </Nav>
     </>
-
   );
 }
 
