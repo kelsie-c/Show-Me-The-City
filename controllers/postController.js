@@ -10,7 +10,7 @@ module.exports = {
   },
   findByLocation: function(req, res) {
     console.log(req);
-    db.Recs.find({location: req.params.location})
+    db.Recs.find({location: req.params.location}) // toLowerCase
       .then(dbModel => res.json(dbModel))
       .catch(err => console.log(err.message));
   },

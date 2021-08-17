@@ -18,6 +18,8 @@ function App() {
 
   const [location, setLocation] = useState("New York City, NY");
 
+  // dynamic array that pulls only existing cities from the database
+
   return (
     <div>
       <Router>

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import Autocomplete from "../components/Autocomplete/Autocomplete";
 import { useHistory } from "react-router-dom";
 import {
   Center,
@@ -45,14 +46,31 @@ function Landing(props) {
           </header>
           <br />
           <div className="d-flex justify-content-center">
+          
           <InputGroup className="mb-3">
-            <FormControl
+            <Autocomplete
               ref={locationRef}
               style={style}
               className="searchBox"
               type="text"
               placeholder="Search for a city..."
               name="search"
+              suggestions={[
+                "Bowling Green, Ohio", 
+                "Fresno, California", 
+                "Columbus, Ohio", 
+                "Winston Salem, North Carolina", 
+                "Destin, Florida", 
+                "Bloomington, Minnesota", 
+                "Chester, West Virgina", 
+                "Grand Rapids, Michigan",
+                "Nashville, Tennessee",
+                "Chicago, Illinois",
+                "Morrison, Colorado",
+                "Seattle, Washington",
+                "Atlanta, Georgia",
+                "Houston, Texas"
+              ]}
             />
             <InputGroup.Append>
               <Button variant="outline-secondary" onClick={handleClick}><FaSearch /></Button>
