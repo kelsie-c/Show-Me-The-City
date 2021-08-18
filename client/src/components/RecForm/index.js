@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -6,11 +7,14 @@ import { useAuth } from "../../contexts/AuthContext";
 import API from "../../utils/API";
 import Cloudinary from "../Cloudinary";
 import { Button, TextArea } from "../styling/style";
+const OWAPI_KEY = process.env.OWAPI_KEY;
+const geoUrl = "https://api.openweathermap.org/geo/1.0/direct?q=";
 
 // Form for a user to add a recommendation/post
 function RecForm(props) {
   console.log(props);
-  const locationRef = useRef();
+  const cityRef = useRef();
+  const stateRef = useRef();
   const titleRef = useRef();
   const synopsisRef = useRef();
   const photo = props.photo;
@@ -32,9 +36,39 @@ function RecForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (titleRef === "") return;
+    const city = cityRef.current.value;
+    const state = stateRef.current.value
+
+    const validCitySearch = geoUrl + city + "," + state + ",US&appid=" + OWAPI_KEY;
+
+    testCity(validCitySearch, city, state);
+  }
+
+  function testCity(validCitySearch, city, state) {
+    axios.get(validCitySearch)
+      .then((response) => {
+        console.log(response.data);
+        const resCity = response.data[0].name;
+        const resState = response.data[0].state;
+        const resCountry = response.data[0].country;
+
+        if (!resCity.includes(city) || resState !== state || resCountry !== "US") {
+          console.log("Please enter a valid US City")
+          cityRef.current.value = "";
+          stateRef.current.value = "";
+          return;
+        } else {
+          city = resCity;
+          createPost(city, state);
+        }
+      })    
+  }
+
+  function createPost(city, state) {
+    const locationFull = city + ", " + state;
     API.createPost({
       title: titleRef.current.value,
-      location: locationRef.current.value,
+      location: locationFull,
       synopsis: synopsisRef.current.value,
       category: selectedCategory,
       image: photo,
@@ -51,9 +85,11 @@ function RecForm(props) {
       .catch((err) => console.log(err));
 
     titleRef.current.value = "";
-    locationRef.current.value = "";
+    cityRef.current.value = "";
+    stateRef.current.value = "";
     synopsisRef.current.value = "";
   };
+  
 
   return (
     <form>
@@ -62,12 +98,20 @@ function RecForm(props) {
       </div>
 
       <label>City: </label>
-      <input
+      <div class="field has-addons searchByName">
+          <div class="control is-expanded">
+              <input ref={cityRef} class="input" type="text" placeholder="City"/>
+          </div>
+          <div class="control">
+              <input ref={stateRef} class="input" type="text" placeholder="State"/>
+          </div>
+      </div>
+      {/* <input
         ref={locationRef}
         className="col-12 form-group"
         type="text"
         placeholder="Enter City"
-      />
+      /> */}
       <div className="form-group">
         <DropdownButton
           className="DDButton"

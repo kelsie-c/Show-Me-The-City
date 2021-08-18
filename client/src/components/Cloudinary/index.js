@@ -1,12 +1,11 @@
 import axios from "axios";
 import React, { useRef } from "react";
 import { Button } from "../styling/style";
+const CLOUDINARY_UPLOAD_PRESET = process.env.CLOUDINARY_UPLOAD_PRESET;
+const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
+const CLOUDINARY_IMAGE = process.env.CLOUDINARY_IMAGE;
 
 function Cloudinary(props) {
-  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dhx8koumu/upload/";
-  const CLOUDINARY_IMAGE = "https://res.cloudinary.com/dhx8koumu/image/upload/";
-  const CLOUDINARY_UPLOAD_PRESET = "pyejztvw";
-
   //   const [photo, setPhoto] = useState("https://via.placeholder.com/300x175");
   const triggerEvent = useRef(null);
 
