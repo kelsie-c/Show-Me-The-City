@@ -2,12 +2,12 @@ import axios from "axios";
 import React, { useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import API from "../../utils/API";
 import Cloudinary from "../Cloudinary";
 import { Button, TextArea } from "../styling/style";
-const OWAPI_KEY = process.env.OWAPI_KEY;
+const OWAPI_KEY = process.env.REACT_APP_OWAPI_KEY;
 const geoUrl = "https://api.openweathermap.org/geo/1.0/direct?q=";
 
 // Form for a user to add a recommendation/post
@@ -35,7 +35,7 @@ function RecForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (titleRef === "") return;
+    if (titleRef === "") return; // bad workaround for duplicate submission
     const city = cityRef.current.value;
     const state = stateRef.current.value
 
@@ -66,9 +66,10 @@ function RecForm(props) {
 
   function createPost(city, state) {
     const locationFull = city + ", " + state;
+    const locationFinal = locationFull.toLowerCase();
     API.createPost({
       title: titleRef.current.value,
-      location: locationFull,
+      location: locationFinal,
       synopsis: synopsisRef.current.value,
       category: selectedCategory,
       image: photo,
