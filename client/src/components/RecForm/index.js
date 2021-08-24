@@ -36,8 +36,8 @@ function RecForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (titleRef === "") return; // bad workaround for duplicate submission
-    const city = cityRef.current.value;
-    const state = stateRef.current.value
+    const city = cityRef.current.value.toLowerCase();
+    const state = stateRef.current.value.toLowerCase();
 
     const validCitySearch = geoUrl + city + "," + state + ",US&appid=" + OWAPI_KEY;
 
@@ -48,12 +48,12 @@ function RecForm(props) {
     axios.get(validCitySearch)
       .then((response) => {
         console.log(response.data);
-        const resCity = response.data[0].name;
-        const resState = response.data[0].state;
+        const resCity = response.data[0].name.toLowerCase();
+        const resState = response.data[0].state.toLowerCase();
         const resCountry = response.data[0].country;
 
         if (!resCity.includes(city) || resState !== state || resCountry !== "US") {
-          console.log("Please enter a valid US City")
+          window.alert("Please enter a valid US City");
           cityRef.current.value = "";
           stateRef.current.value = "";
           return;
@@ -104,7 +104,7 @@ function RecForm(props) {
               <input ref={cityRef} class="input" type="text" placeholder="City"/>
           </div>
           <div class="control">
-              <input ref={stateRef} class="input" type="text" placeholder="State"/>
+              <input ref={stateRef} class="input" type="text" placeholder="State Code" maxlength="2"/>
           </div>
       </div>
       {/* <input
