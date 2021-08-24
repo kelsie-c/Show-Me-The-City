@@ -4,24 +4,29 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import API from "../../utils/API";
 import Cloudinary from "../Cloudinary";
 import { Button, TextArea } from "../styling/style";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 // Form for a user to add a recommendation/post
 function EditForm(props) {
   
   console.log(props);
-  const locationRef = useRef();
+  const cityRef = useRef();
+  const stateRef = useRef();
   const titleRef = useRef();
   const synopsisRef = useRef();
   const photo = props.photo;
   const history = useHistory();
 
   let location = props.location;
+  let state = location[location.length - 2].toUpperCase() + location[location.length - 1].toUpperCase();
+  let str = location.split(',');
+  let newStr = str[0];
+  let city = newStr.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
   let title = props.title;
   let synopsis = props.synopsis;
   // created a variable and on load it is empty - default to empty
-  let selectedCategory = "";
+  let selectedCategory = "Category";
 
   // This function is taking the selected option and setting it
   // to a variable to be use in the post of the handleSubmit
@@ -34,7 +39,7 @@ function EditForm(props) {
   // or keep photo state here in parent element & pass handler to child
 
   function updateCity() {
-    location = locationRef.current.value;
+    location = cityRef.current.value + ", " + stateRef.current.value;
   }
 
   function updateTitle() {
@@ -61,7 +66,8 @@ function EditForm(props) {
       .catch((err) => console.log(err));
 
     titleRef.current.value = "";
-    locationRef.current.value = "";
+    cityRef.current.value = "";
+    stateRef.current.value = "";
     synopsisRef.current.value = "";
   };
   return (
@@ -70,19 +76,20 @@ function EditForm(props) {
         <Cloudinary photo={photo} setPhoto={props.setPhoto} />
       </div>
       <label>City: </label>
-      <input
-        ref={locationRef}
-        className="col-12 form-group"
-        type="text"
-        placeholder={props.location}
-        onChange={updateCity}
-      />
+      <div class="field has-addons searchByName">
+          <div class="control is-expanded">
+              <input ref={cityRef} class="input" type="text" placeholder={city} onChange={updateCity}/>
+          </div>
+          <div class="control">
+              <input ref={stateRef} class="input" type="text" placeholder={state} maxlength="2" onChange={updateCity}/>
+          </div>
+      </div>
 
       <div className="form-group">
         <DropdownButton
           className="DDButton"
           alignRight
-          title="Category"
+          title={selectedCategory}
           id="dropdownMenuButton"
           // This is the event listener which calls handleSelect when option is chosen
           onSelect={handleSelect}

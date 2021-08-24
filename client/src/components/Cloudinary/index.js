@@ -59,8 +59,8 @@ function Cloudinary(props) {
         />
         <br></br>
       </label>
-      <div>
-        <Button type="submit">Add a Photo</Button>
+      <div className="add-photo">
+        <span>Add a Photo</span>
       </div>
     </div>
   );
