@@ -48,7 +48,7 @@ function Landing(props) {
           <div className="d-flex justify-content-center">
           
           <InputGroup className="mb-3">
-            <Autocomplete
+            <FormControl
               ref={locationRef}
               style={style}
               className="searchBox"
